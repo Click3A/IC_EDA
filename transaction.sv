@@ -8,4 +8,3 @@ function void display(string name_1);
     $display("-%s",name_1);
     $display("-----------------");
     $display("a = %0d, b = %0d",a,b);
-    //
