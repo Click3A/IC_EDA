@@ -28,6 +28,7 @@ class mem_seq_item extends uvm_sequence_item;
    
   //constaint, to generate any one among write and read
   constraint wr_rd_c { wr_en != rd_en; };
+  //
    
 endclass
  
