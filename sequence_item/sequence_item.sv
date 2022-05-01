@@ -50,4 +50,8 @@ module seq_item_tb;
     //printing the seq_item
     seq_item.print();  
   end 
+	    initial	begin
+	    $fsdbDumpfile("tb.fsdb");//这个是产生名为tb.fsdb的文件
+	    $fsdbDumpvars;
+    end
 endmodule
