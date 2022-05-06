@@ -7,7 +7,7 @@ module RAM
   input  [ADDSIZE-1:0]  waddr,raddr,
   input  [DATASIZE-1:0] wdata,
   input  wclk,wclken,wfull,
-  input  rclk,rclken,
+  input  rclk,rclken,rempty,
   output reg[DATASIZE-1:0] rdata
  );
 
@@ -22,7 +22,7 @@ module RAM
  end
 
  always@(posedge rclk)begin
-     if(rclken)
+     if(rclken&&!rempty)
          rdata <= mem[raddr];
      else
          rdata <= 8'd0;

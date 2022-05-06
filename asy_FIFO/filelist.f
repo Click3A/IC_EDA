@@ -1,2 +1,5 @@
+./w_control.v
+./r_control.v
 ./RAM.v
-./RAM_tb.v
+./fifo_top.v
+./top_tb.v
