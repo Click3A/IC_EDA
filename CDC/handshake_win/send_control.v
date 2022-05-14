@@ -30,7 +30,7 @@ module send_control
     input  b_ack,             
     output reg[WIDTH_D-1:0] dout,
     output aready,
-    output reg a_req
+    output a_req
 );
 
 wire ena;
@@ -69,14 +69,7 @@ end
 assign aready = state;
 assign ena    = asend&aready;
 
-always @(posedge aclk or negedge arst_n) begin
-    if(!arst_n)
-        a_req <= 1'b0;
-    else if(ena)
-        a_req <= ~a_req;
-    else
-        a_req <= a_req;
-end
+flop flop(.a(ena),.clk(aclk),.rst_n(arst_n),.b(a_req));
 
 
 endmodule

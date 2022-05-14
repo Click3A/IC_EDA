@@ -34,6 +34,6 @@ always @(posedge clk or negedge rst_n) begin
     {dr2,dr1}<={dr1,d};
 end
 
-assign pulse = (~dr2)&dr1;
+assign pulse = dr2^dr1;
 
 endmodule
