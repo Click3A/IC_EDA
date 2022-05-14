@@ -68,7 +68,7 @@ end
 initial begin
     repeat(15)begin
         adata = {$random}%256;
-        #100;
+        #150;
     end
     $finish;
 end
