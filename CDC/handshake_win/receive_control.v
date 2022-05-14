@@ -68,6 +68,15 @@ always@(*)begin
 end
 assign bvalid = state;
 assign ena    = bload&bvalid;
+/*always @(posedge bclk or negedge brst_n) begin
+    if(!brst_n)
+        ena<=1'b0;
+    else if(bload&&bvalid)
+        ena<=~ena;
+    else
+        ena<=ena;
+end
+*/
 
 always @(posedge bclk or negedge brst_n) begin
     if(!brst_n)
