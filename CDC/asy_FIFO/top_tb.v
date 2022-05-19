@@ -25,7 +25,7 @@ module top_tb();
     wdata = 20;
  end
  always #20 wclk = ~wclk;
- always #10 rclk = ~rclk;
+ always #13 rclk = ~rclk;
 
  initial begin
      rst_n = 0;
@@ -33,11 +33,19 @@ module top_tb();
      rst_n = 1;
      #20;
      repeat(300)begin
+         wdata = $random%256;
+         #40;
+     end
+     rinc = 1;
+     #20000;
+     rinc = 0;
+     repeat(300)begin
          #20;
          wdata = $random%256;
      end
+     #5000;
      rinc = 1;
-     #200000;
+     #20000;
      $finish;
  end
 

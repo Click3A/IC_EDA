@@ -7,11 +7,12 @@ module r_control
       input [ADDSIZE   :0] wptr,
       output[ADDSIZE -1:0] raddr,
       output rempty,
-      output[ADDSIZE   :0] rptr
+      output reg[ADDSIZE   :0] rptr
   );
 
   reg[ADDSIZE:0]  rd_cnt;//感觉可以只用n-1位
   wire[ADDSIZE:0] rd_cnt_next;
+  wire[ADDSIZE:0] rptr_next;
   reg[ADDSIZE:0]  wptr_reg1,wptr_reg2;
   localparam DEPTH = 1<<ADDSIZE;
 
@@ -30,15 +31,15 @@ module r_control
 
   always@(posedge rclk or negedge rrst_n)begin//默认写时钟来的时候进一个数据
       if(!rrst_n)
-        rd_cnt <= 0;
+        {rd_cnt,rptr} <= 2'b00;
       else
-        rd_cnt <= rd_cnt_next;
+        {rd_cnt,rptr} <= {rd_cnt_next,rptr_next};
   end
 
   assign rd_cnt_next = rd_cnt + (rinc&&!rempty);//这种写法第一次见，记着,把即将读取的地址发送出去，而不是发送正在读取的地址
 
   assign raddr = rd_cnt[DATASIZE-1:0];//输出地址
-  assign rptr  = (rd_cnt_next>>1)^rd_cnt_next;//格雷码转换
+  assign rptr_next  = (rd_cnt_next>>1)^rd_cnt_next;//格雷码转换
   assign rempty = (rptr==wptr_reg2[ADDSIZE:0])?1:0;//读空信号的产生
 
 endmodule

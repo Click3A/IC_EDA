@@ -10,11 +10,12 @@ module w_control
       input [ADDSIZE   :0] rptr,
       output[ADDSIZE -1:0] waddr,
       output wfull,
-      output[ADDSIZE   :0] wptr
+      output reg[ADDSIZE   :0] wptr
   );
 
   reg[ADDSIZE:0]  addr_cnt;
   wire[ADDSIZE:0] addr_cnt_next;
+  wire[ADDSIZE:0] wptr_next;
   reg[ADDSIZE:0]  rptr_reg1,rptr_reg2;
   localparam DEPTH = 1<<ADDSIZE;
 
@@ -32,16 +33,20 @@ module w_control
 
 
   always@(posedge wclk or negedge wrst_n)begin//默认写时钟来的时候进一个数据
-    if(!wrst_n)
+    if(!wrst_n)begin
         addr_cnt <= 0;
-    else
+        wptr     <= 0;
+    end
+    else begin
         addr_cnt <= addr_cnt_next;
+        wptr     <= wptr_next;
+    end
   end
 
   assign addr_cnt_next = addr_cnt + (winc&&!wfull);
 
   assign waddr = addr_cnt[DATASIZE-1:0];//输出地址
-  assign wptr  = (addr_cnt_next>>1)^addr_cnt_next;//格雷码转换,没有初始态
+  assign wptr_next  = (addr_cnt_next>>1)^addr_cnt_next;//格雷码转换,没有初始态
   assign wfull = (wptr=={~rptr_reg2[ADDSIZE:ADDSIZE-1],rptr_reg2[ADDSIZE-2:0]})?1:0;//注意点1，写满信号的产生
 
 endmodule
