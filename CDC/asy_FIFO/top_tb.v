@@ -1,4 +1,4 @@
-module top_sb();
+module top_tb();
 
  reg wclk,rclk,rst_n,winc,rinc;
  reg  [7:0]wdata;
@@ -22,6 +22,7 @@ module top_sb();
     rclk = 1;
     winc = 1;
     rinc = 0;
+    wdata = 20;
  end
  always #20 wclk = ~wclk;
  always #10 rclk = ~rclk;
